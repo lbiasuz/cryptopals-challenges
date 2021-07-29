@@ -1,14 +1,24 @@
-import sys
-from set1 import challenge3
+from set1.challenge3 import find_xor_key, get_best_scored_string
 
-hex_decode_str = '0123456789abcdef'
 
-def find_encrypted_hex():
-    """ Iterates through a file of hex encoded strings, xors them against every
-        ascii char, scores every xored string and returns the best scored one; """
-    file = open('set1/ch4.txt')
-    xoredlist = [challenge3.find_xor_key(bytes.fromhex(h)) for h in file]
-    return sorted(xoredlist, key=lambda x: x['score'], reverse=True)[0]
+def find_encrypted_hex_on_file(file):
+    hex_list = [find_xor_key(bytes.fromhex(line)) for line in file]
+    return get_best_scored_string(hex_list)
+
+
+def get_text():
+    return open("set1/ch4.txt")
+
+
+def test_algorithm():
+    expected_result = {
+        "string": b"Now that the party is jumping\n",
+        "char": "5",
+        "score": 183,
+    }
+    assert find_encrypted_hex_on_file(get_text()) == expected_result
+
 
 if __name__ == "__main__":
-    print(find_encrypted_hex())
+    test_algorithm()
+    print(find_encrypted_hex_on_file(get_text()))

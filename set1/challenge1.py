@@ -1,26 +1,30 @@
 # strings for encode/decode the type to int
-hex_decode_str = '0123456789abcdef'
-base64_encode_str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+from set1.challenge2 import HEX_DECODE_STR
 
 
-def hex_to_base64(hex_input_string):
-    #11-16: iterates through hex_input_string, generates a list of bits and joins them on bit_string;
-    bit_string = ''.join(
+HEX_DECODE_STR = "0123456789abcdef"
+BASE64_ENCODE_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+
+def hex_to_base64(hex_in):
+    bits = "".join(
         [
-            bin(hex_decode_str.index(hex_input_string[i]))[2:].zfill(4)
-            for i in range(0, len(hex_input_string))
+            bin(HEX_DECODE_STR.index(hex_in[i]))[2:].zfill(4)
+            for i in range(0, len(hex_in))
         ]
     )
-    #18-23: iterates through bit_string, generates a list of characters and joins them on base_output;
-    base64_output_string = ''.join(
-        [
-            base64_encode_str[int(bit_string[i : i + 6], 2)]
-            for i in range(0, len(bit_string), 6)
-        ]
+    base64_out = "".join(
+        [BASE64_ENCODE_STR[int(bits[i : i + 6], 2)] for i in range(0, len(bits), 6)]
     )
-    return base64_output_string
+    return base64_out
 
 
 if __name__ == "__main__":
     import sys
-    print(hex_to_base64(sys.argv[1]))
+
+    hex_input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+    expected_output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+    assert hex_to_base64(hex_input) == expected_output
+
+    output = hex_to_base64(sys.argv[1])
+    print(output)
